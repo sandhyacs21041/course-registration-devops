@@ -12,51 +12,45 @@ pipeline {
 
         stage('Build Backend') {
             steps {
-                dir('backend') {
-                    echo "Building backend with Maven..."
-                    sh 'mvn clean package -DskipTests'
-                }
+                echo "Building Spring Boot backend..."
+                bat 'cd backend && mvn clean package -DskipTests'
             }
         }
 
-        stage('Build Docker Images') {
+        stage('Run Tests') {
             steps {
-                echo "Building Docker images..."
-                sh 'docker build -t course-backend ./backend'
-                sh 'docker build -t course-frontend ./frontend'
+                echo "Running Maven tests..."
+                bat 'cd backend && mvn test'
             }
         }
 
-        stage('Run Containers') {
+        stage('Build Docker Image') {
             steps {
-                echo "Running Docker containers..."
-                sh 'docker stop course-backend || true'
-                sh 'docker stop course-frontend || true'
-                sh 'docker rm course-backend || true'
-                sh 'docker rm course-frontend || true'
-
-                sh 'docker run -d -p 8080:8080 --name course-backend course-backend'
-                sh 'docker run -d -p 3000:3000 --name course-frontend course-frontend'
+                echo "Building Docker image..."
+                bat 'cd backend && docker build -t course-backend .'
             }
         }
 
-        stage('Health Check') {
+        stage('Run Docker Container') {
             steps {
-                echo "Checking backend health..."
-                sleep 10
-                sh 'curl -f http://localhost:8080 || exit 1'
+                echo "Starting Docker container..."
+
+                bat 'docker stop course-backend-container || exit 0'
+                bat 'docker rm course-backend-container || exit 0'
+
+                bat 'docker run -d -p 9090:9090 --name course-backend-container course-backend'
             }
         }
+
     }
 
     post {
         success {
             echo "Pipeline completed successfully!"
-            echo "Frontend: http://localhost:3000"
-            echo "Backend: http://localhost:8080"
+            echo "Backend running at http://localhost:8080"
         }
         failure {
-            echo "Pipeline failed. Check logs."
+            echo "Pipeline failed. Check Jenkins logs."
         }
     }
 }
