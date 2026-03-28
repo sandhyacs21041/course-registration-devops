@@ -5,7 +5,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                echo "Cloning GitHub repository..."
+                echo "Cloning repository from GitHub..."
                 git branch: 'main', url: 'https://github.com/sandhyacs21041/course-registration-devops.git'
             }
         }
@@ -19,7 +19,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                echo "Running Maven tests..."
+                echo "Running backend tests..."
                 bat 'cd backend && mvn test'
             }
         }
@@ -33,15 +33,14 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                echo "Starting Docker container..."
+                echo "Running Docker container..."
 
                 bat 'docker stop course-backend-container || exit 0'
                 bat 'docker rm course-backend-container || exit 0'
 
-                bat 'docker run -d -p 9090:9090 --name course-backend-container course-backend'
+                bat 'docker run -d -p 8090:8080 --name course-backend-container course-backend'
             }
         }
-
     }
 
     post {
