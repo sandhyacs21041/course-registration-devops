@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StudentController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Course Registration System</a> &gt; <a href="index.source.html" class="el_package">com.courseapp.controller</a> &gt; <span class="el_source">StudentController.java</span></div><h1>StudentController.java</h1><pre class="source lang-java linenums">package com.courseapp.controller;
+
+import com.courseapp.model.Student;
+import com.courseapp.service.StudentService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping(&quot;/api/students&quot;)
+@CrossOrigin(origins = &quot;*&quot;)
+<span class="nc" id="L15">public class StudentController {</span>
+
+    @Autowired
+    private StudentService studentService;
+
+    @GetMapping
+    public ResponseEntity&lt;List&lt;Student&gt;&gt; getAllStudents() {
+<span class="nc" id="L22">        return ResponseEntity.ok(studentService.getAllStudents());</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;?&gt; getStudentById(@PathVariable Long id) {
+<span class="nc" id="L27">        return studentService.getStudentById(id)</span>
+<span class="nc" id="L28">                .map(ResponseEntity::ok)</span>
+<span class="nc" id="L29">                .orElse(ResponseEntity.notFound().build());</span>
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;?&gt; createStudent(@Valid @RequestBody Student student) {
+        try {
+<span class="nc" id="L35">            Student created = studentService.createStudent(student);</span>
+<span class="nc" id="L36">            return ResponseEntity.status(HttpStatus.CREATED).body(created);</span>
+<span class="nc" id="L37">        } catch (RuntimeException e) {</span>
+<span class="nc" id="L38">            return ResponseEntity.badRequest().body(e.getMessage());</span>
+        }
+    }
+
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;?&gt; updateStudent(@PathVariable Long id, @Valid @RequestBody Student student) {
+        try {
+<span class="nc" id="L45">            return ResponseEntity.ok(studentService.updateStudent(id, student));</span>
+<span class="nc" id="L46">        } catch (RuntimeException e) {</span>
+<span class="nc" id="L47">            return ResponseEntity.notFound().build();</span>
+        }
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;?&gt; deleteStudent(@PathVariable Long id) {
+        try {
+<span class="nc" id="L54">            studentService.deleteStudent(id);</span>
+<span class="nc" id="L55">            return ResponseEntity.ok().body(&quot;Student deleted successfully&quot;);</span>
+<span class="nc" id="L56">        } catch (RuntimeException e) {</span>
+<span class="nc" id="L57">            return ResponseEntity.notFound().build();</span>
+        }
+    }
+
+    @PostMapping(&quot;/{studentId}/register/{courseId}&quot;)
+    public ResponseEntity&lt;?&gt; registerForCourse(@PathVariable Long studentId, @PathVariable Long courseId) {
+        try {
+<span class="nc" id="L64">            Student student = studentService.registerForCourse(studentId, courseId);</span>
+<span class="nc" id="L65">            return ResponseEntity.ok(student);</span>
+<span class="nc" id="L66">        } catch (RuntimeException e) {</span>
+<span class="nc" id="L67">            return ResponseEntity.badRequest().body(e.getMessage());</span>
+        }
+    }
+
+    @DeleteMapping(&quot;/{studentId}/drop/{courseId}&quot;)
+    public ResponseEntity&lt;?&gt; dropCourse(@PathVariable Long studentId, @PathVariable Long courseId) {
+        try {
+<span class="nc" id="L74">            Student student = studentService.dropCourse(studentId, courseId);</span>
+<span class="nc" id="L75">            return ResponseEntity.ok(student);</span>
+<span class="nc" id="L76">        } catch (RuntimeException e) {</span>
+<span class="nc" id="L77">            return ResponseEntity.badRequest().body(e.getMessage());</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

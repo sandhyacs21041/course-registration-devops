@@ -1,0 +1,12 @@
+com\courseapp\model\Course$CourseBuilder.class
+com\courseapp\controller\CourseController.class
+com\courseapp\repository\CourseRepository.class
+com\courseapp\service\CourseService.class
+com\courseapp\service\StudentService.class
+com\courseapp\DataInitializer.class
+com\courseapp\repository\StudentRepository.class
+com\courseapp\CourseRegistrationApplication.class
+com\courseapp\model\Student.class
+com\courseapp\controller\StudentController.class
+com\courseapp\model\Course.class
+com\courseapp\model\Student$StudentBuilder.class

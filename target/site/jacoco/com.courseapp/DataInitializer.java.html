@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DataInitializer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Course Registration System</a> &gt; <a href="index.source.html" class="el_package">com.courseapp</a> &gt; <span class="el_source">DataInitializer.java</span></div><h1>DataInitializer.java</h1><pre class="source lang-java linenums">package com.courseapp;
+
+import com.courseapp.model.Course;
+import com.courseapp.model.Student;
+import com.courseapp.repository.CourseRepository;
+import com.courseapp.repository.StudentRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+<span class="nc" id="L12">public class DataInitializer {</span>
+
+    @Bean
+    public CommandLineRunner initData(CourseRepository courseRepo, StudentRepository studentRepo) {
+<span class="nc" id="L16">        return args -&gt; {</span>
+            // Sample Courses
+<span class="nc" id="L18">            Course c1 = Course.builder()</span>
+<span class="nc" id="L19">                .name(&quot;Introduction to Computer Science&quot;)</span>
+<span class="nc" id="L20">                .code(&quot;CS101&quot;)</span>
+<span class="nc" id="L21">                .instructor(&quot;Dr. Smith&quot;)</span>
+<span class="nc" id="L22">                .credits(3)</span>
+<span class="nc" id="L23">                .capacity(30)</span>
+<span class="nc" id="L24">                .description(&quot;Fundamentals of programming and computational thinking.&quot;)</span>
+<span class="nc" id="L25">                .schedule(&quot;Mon/Wed 9:00-10:30 AM&quot;)</span>
+<span class="nc" id="L26">                .status(&quot;OPEN&quot;)</span>
+<span class="nc" id="L27">                .build();</span>
+
+<span class="nc" id="L29">            Course c2 = Course.builder()</span>
+<span class="nc" id="L30">                .name(&quot;Data Structures &amp; Algorithms&quot;)</span>
+<span class="nc" id="L31">                .code(&quot;CS201&quot;)</span>
+<span class="nc" id="L32">                .instructor(&quot;Dr. Johnson&quot;)</span>
+<span class="nc" id="L33">                .credits(4)</span>
+<span class="nc" id="L34">                .capacity(25)</span>
+<span class="nc" id="L35">                .description(&quot;Advanced data structures and algorithm design.&quot;)</span>
+<span class="nc" id="L36">                .schedule(&quot;Tue/Thu 11:00-12:30 PM&quot;)</span>
+<span class="nc" id="L37">                .status(&quot;OPEN&quot;)</span>
+<span class="nc" id="L38">                .build();</span>
+
+<span class="nc" id="L40">            Course c3 = Course.builder()</span>
+<span class="nc" id="L41">                .name(&quot;Web Development&quot;)</span>
+<span class="nc" id="L42">                .code(&quot;CS301&quot;)</span>
+<span class="nc" id="L43">                .instructor(&quot;Prof. Williams&quot;)</span>
+<span class="nc" id="L44">                .credits(3)</span>
+<span class="nc" id="L45">                .capacity(20)</span>
+<span class="nc" id="L46">                .description(&quot;Frontend and backend web development technologies.&quot;)</span>
+<span class="nc" id="L47">                .schedule(&quot;Mon/Wed/Fri 2:00-3:00 PM&quot;)</span>
+<span class="nc" id="L48">                .status(&quot;OPEN&quot;)</span>
+<span class="nc" id="L49">                .build();</span>
+
+<span class="nc" id="L51">            Course c4 = Course.builder()</span>
+<span class="nc" id="L52">                .name(&quot;Database Management&quot;)</span>
+<span class="nc" id="L53">                .code(&quot;CS401&quot;)</span>
+<span class="nc" id="L54">                .instructor(&quot;Dr. Brown&quot;)</span>
+<span class="nc" id="L55">                .credits(3)</span>
+<span class="nc" id="L56">                .capacity(30)</span>
+<span class="nc" id="L57">                .description(&quot;Relational databases, SQL, and NoSQL systems.&quot;)</span>
+<span class="nc" id="L58">                .schedule(&quot;Tue/Thu 2:00-3:30 PM&quot;)</span>
+<span class="nc" id="L59">                .status(&quot;OPEN&quot;)</span>
+<span class="nc" id="L60">                .build();</span>
+
+<span class="nc" id="L62">            Course c5 = Course.builder()</span>
+<span class="nc" id="L63">                .name(&quot;Machine Learning&quot;)</span>
+<span class="nc" id="L64">                .code(&quot;CS501&quot;)</span>
+<span class="nc" id="L65">                .instructor(&quot;Dr. Davis&quot;)</span>
+<span class="nc" id="L66">                .credits(4)</span>
+<span class="nc" id="L67">                .capacity(20)</span>
+<span class="nc" id="L68">                .description(&quot;Supervised and unsupervised learning algorithms.&quot;)</span>
+<span class="nc" id="L69">                .schedule(&quot;Mon/Wed 3:30-5:00 PM&quot;)</span>
+<span class="nc" id="L70">                .status(&quot;OPEN&quot;)</span>
+<span class="nc" id="L71">                .build();</span>
+
+<span class="nc" id="L73">            courseRepo.save(c1);</span>
+<span class="nc" id="L74">            courseRepo.save(c2);</span>
+<span class="nc" id="L75">            courseRepo.save(c3);</span>
+<span class="nc" id="L76">            courseRepo.save(c4);</span>
+<span class="nc" id="L77">            courseRepo.save(c5);</span>
+
+            // Sample Students
+<span class="nc" id="L80">            Student s1 = Student.builder()</span>
+<span class="nc" id="L81">                .name(&quot;Alice Sharma&quot;)</span>
+<span class="nc" id="L82">                .email(&quot;alice@university.edu&quot;)</span>
+<span class="nc" id="L83">                .studentId(&quot;STU001&quot;)</span>
+<span class="nc" id="L84">                .department(&quot;Computer Science&quot;)</span>
+<span class="nc" id="L85">                .build();</span>
+
+<span class="nc" id="L87">            Student s2 = Student.builder()</span>
+<span class="nc" id="L88">                .name(&quot;Bob Kumar&quot;)</span>
+<span class="nc" id="L89">                .email(&quot;bob@university.edu&quot;)</span>
+<span class="nc" id="L90">                .studentId(&quot;STU002&quot;)</span>
+<span class="nc" id="L91">                .department(&quot;Information Technology&quot;)</span>
+<span class="nc" id="L92">                .build();</span>
+
+<span class="nc" id="L94">            studentRepo.save(s1);</span>
+<span class="nc" id="L95">            studentRepo.save(s2);</span>
+
+<span class="nc" id="L97">            System.out.println(&quot;✅ Sample data initialized successfully!&quot;);</span>
+<span class="nc" id="L98">        };</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StudentService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Course Registration System</a> &gt; <a href="index.source.html" class="el_package">com.courseapp.service</a> &gt; <span class="el_source">StudentService.java</span></div><h1>StudentService.java</h1><pre class="source lang-java linenums">package com.courseapp.service;
+
+import com.courseapp.model.Course;
+import com.courseapp.model.Student;
+import com.courseapp.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L12">public class StudentService {</span>
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private CourseService courseService;
+
+    public List&lt;Student&gt; getAllStudents() {
+<span class="fc" id="L21">        return studentRepository.findAll();</span>
+    }
+
+    public Optional&lt;Student&gt; getStudentById(Long id) {
+<span class="nc" id="L25">        return studentRepository.findById(id);</span>
+    }
+
+    public Student createStudent(Student student) {
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (studentRepository.existsByEmail(student.getEmail())) {</span>
+<span class="fc" id="L30">            throw new RuntimeException(&quot;Student with email &quot; + student.getEmail() + &quot; already exists&quot;);</span>
+        }
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (studentRepository.existsByStudentId(student.getStudentId())) {</span>
+<span class="nc" id="L33">            throw new RuntimeException(&quot;Student ID &quot; + student.getStudentId() + &quot; already exists&quot;);</span>
+        }
+<span class="fc" id="L35">        return studentRepository.save(student);</span>
+    }
+
+    public Student updateStudent(Long id, Student updatedStudent) {
+<span class="nc" id="L39">        return studentRepository.findById(id).map(student -&gt; {</span>
+<span class="nc" id="L40">            student.setName(updatedStudent.getName());</span>
+<span class="nc" id="L41">            student.setDepartment(updatedStudent.getDepartment());</span>
+<span class="nc" id="L42">            return studentRepository.save(student);</span>
+<span class="nc" id="L43">        }).orElseThrow(() -&gt; new RuntimeException(&quot;Student not found with id: &quot; + id));</span>
+    }
+
+    public void deleteStudent(Long id) {
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if (!studentRepository.existsById(id)) {</span>
+<span class="nc" id="L48">            throw new RuntimeException(&quot;Student not found with id: &quot; + id);</span>
+        }
+<span class="fc" id="L50">        studentRepository.deleteById(id);</span>
+<span class="fc" id="L51">    }</span>
+
+    public Student registerForCourse(Long studentId, Long courseId) {
+<span class="fc" id="L54">        Student student = studentRepository.findById(studentId)</span>
+<span class="pc" id="L55">                .orElseThrow(() -&gt; new RuntimeException(&quot;Student not found&quot;));</span>
+
+<span class="fc" id="L57">        Course course = courseService.getCourseById(courseId)</span>
+<span class="pc" id="L58">                .orElseThrow(() -&gt; new RuntimeException(&quot;Course not found&quot;));</span>
+
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (!courseService.hasAvailableSeats(course)) {</span>
+<span class="fc" id="L61">            throw new RuntimeException(&quot;Course is full&quot;);</span>
+        }
+
+<span class="fc" id="L64">        boolean alreadyRegistered = student.getRegisteredCourses().stream()</span>
+<span class="pc" id="L65">                .anyMatch(c -&gt; c.getId().equals(courseId));</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (alreadyRegistered) {</span>
+<span class="nc" id="L67">            throw new RuntimeException(&quot;Student already registered for this course&quot;);</span>
+        }
+
+<span class="fc" id="L70">        student.getRegisteredCourses().add(course);</span>
+<span class="fc" id="L71">        courseService.incrementEnrollment(course);</span>
+<span class="fc" id="L72">        return studentRepository.save(student);</span>
+    }
+
+    public Student dropCourse(Long studentId, Long courseId) {
+<span class="fc" id="L76">        Student student = studentRepository.findById(studentId)</span>
+<span class="pc" id="L77">                .orElseThrow(() -&gt; new RuntimeException(&quot;Student not found&quot;));</span>
+
+<span class="fc" id="L79">        Course course = courseService.getCourseById(courseId)</span>
+<span class="pc" id="L80">                .orElseThrow(() -&gt; new RuntimeException(&quot;Course not found&quot;));</span>
+
+<span class="fc" id="L82">        boolean wasRegistered = student.getRegisteredCourses().removeIf(c -&gt; c.getId().equals(courseId));</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if (!wasRegistered) {</span>
+<span class="nc" id="L84">            throw new RuntimeException(&quot;Student is not registered for this course&quot;);</span>
+        }
+
+<span class="fc" id="L87">        courseService.decrementEnrollment(course);</span>
+<span class="fc" id="L88">        return studentRepository.save(student);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

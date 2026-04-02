@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.courseapp.CourseServiceTest
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.108 s -- in com.courseapp.CourseServiceTest

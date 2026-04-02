@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CourseService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Course Registration System</a> &gt; <a href="index.source.html" class="el_package">com.courseapp.service</a> &gt; <span class="el_source">CourseService.java</span></div><h1>CourseService.java</h1><pre class="source lang-java linenums">package com.courseapp.service;
+
+import com.courseapp.model.Course;
+import com.courseapp.repository.CourseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L11">public class CourseService {</span>
+
+    @Autowired
+    private CourseRepository courseRepository;
+
+    public List&lt;Course&gt; getAllCourses() {
+<span class="fc" id="L17">        return courseRepository.findAll();</span>
+    }
+
+    public Optional&lt;Course&gt; getCourseById(Long id) {
+<span class="fc" id="L21">        return courseRepository.findById(id);</span>
+    }
+
+    public Optional&lt;Course&gt; getCourseByCode(String code) {
+<span class="nc" id="L25">        return courseRepository.findByCode(code);</span>
+    }
+
+    public Course createCourse(Course course) {
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (courseRepository.existsByCode(course.getCode())) {</span>
+<span class="fc" id="L30">            throw new RuntimeException(&quot;Course with code &quot; + course.getCode() + &quot; already exists&quot;);</span>
+        }
+<span class="fc" id="L32">        return courseRepository.save(course);</span>
+    }
+
+    public Course updateCourse(Long id, Course updatedCourse) {
+<span class="nc" id="L36">        return courseRepository.findById(id).map(course -&gt; {</span>
+<span class="nc" id="L37">            course.setName(updatedCourse.getName());</span>
+<span class="nc" id="L38">            course.setInstructor(updatedCourse.getInstructor());</span>
+<span class="nc" id="L39">            course.setCredits(updatedCourse.getCredits());</span>
+<span class="nc" id="L40">            course.setCapacity(updatedCourse.getCapacity());</span>
+<span class="nc" id="L41">            course.setDescription(updatedCourse.getDescription());</span>
+<span class="nc" id="L42">            course.setSchedule(updatedCourse.getSchedule());</span>
+<span class="nc" id="L43">            course.setStatus(updatedCourse.getStatus());</span>
+<span class="nc" id="L44">            return courseRepository.save(course);</span>
+<span class="nc" id="L45">        }).orElseThrow(() -&gt; new RuntimeException(&quot;Course not found with id: &quot; + id));</span>
+    }
+
+    public void deleteCourse(Long id) {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (!courseRepository.existsById(id)) {</span>
+<span class="fc" id="L50">            throw new RuntimeException(&quot;Course not found with id: &quot; + id);</span>
+        }
+<span class="fc" id="L52">        courseRepository.deleteById(id);</span>
+<span class="fc" id="L53">    }</span>
+
+    public List&lt;Course&gt; getOpenCourses() {
+<span class="fc" id="L56">        return courseRepository.findByStatus(&quot;OPEN&quot;);</span>
+    }
+
+    public boolean hasAvailableSeats(Course course) {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        return course.getEnrolled() &lt; course.getCapacity();</span>
+    }
+
+    public Course incrementEnrollment(Course course) {
+<span class="fc" id="L64">        course.setEnrolled(course.getEnrolled() + 1);</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (course.getEnrolled() &gt;= course.getCapacity()) {</span>
+<span class="fc" id="L66">            course.setStatus(&quot;FULL&quot;);</span>
+        }
+<span class="fc" id="L68">        return courseRepository.save(course);</span>
+    }
+
+    public Course decrementEnrollment(Course course) {
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        if (course.getEnrolled() &gt; 0) {</span>
+<span class="fc" id="L73">            course.setEnrolled(course.getEnrolled() - 1);</span>
+<span class="fc" id="L74">            course.setStatus(&quot;OPEN&quot;);</span>
+        }
+<span class="fc" id="L76">        return courseRepository.save(course);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

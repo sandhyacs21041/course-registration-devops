@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Student.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Course Registration System</a> &gt; <a href="index.source.html" class="el_package">com.courseapp.model</a> &gt; <span class="el_source">Student.java</span></div><h1>Student.java</h1><pre class="source lang-java linenums">package com.courseapp.model;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import lombok.*;
+import java.util.Set;
+import java.util.HashSet;
+
+@Entity
+@Table(name = &quot;students&quot;)
+<span class="nc bnc" id="L11" title="All 54 branches missed.">@Data</span>
+<span class="nc" id="L12">@NoArgsConstructor</span>
+<span class="fc" id="L13">@AllArgsConstructor</span>
+<span class="pc bpc" id="L14" title="1 of 2 branches missed.">@Builder</span>
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+<span class="nc" id="L19">    private Long id;</span>
+
+    @NotBlank(message = &quot;Student name is required&quot;)
+    @Column(nullable = false)
+<span class="fc" id="L23">    private String name;</span>
+
+    @Email(message = &quot;Valid email is required&quot;)
+    @NotBlank
+    @Column(nullable = false, unique = true)
+<span class="fc" id="L28">    private String email;</span>
+
+    @NotBlank(message = &quot;Student ID is required&quot;)
+    @Column(nullable = false, unique = true)
+<span class="fc" id="L32">    private String studentId;</span>
+
+    @NotBlank(message = &quot;Department is required&quot;)
+<span class="nc" id="L35">    private String department;</span>
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = &quot;student_courses&quot;,
+        joinColumns = @JoinColumn(name = &quot;student_id&quot;),
+        inverseJoinColumns = @JoinColumn(name = &quot;course_id&quot;)
+    )
+    @Builder.Default
+<span class="fc" id="L44">    private Set&lt;Course&gt; registeredCourses = new HashSet&lt;&gt;();</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

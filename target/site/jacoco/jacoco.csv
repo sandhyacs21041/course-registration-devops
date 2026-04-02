@@ -1,0 +1,11 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Course Registration System,com.courseapp.controller,CourseController,63,0,0,0,17,0,7,0,7,0
+Course Registration System,com.courseapp.controller,StudentController,88,0,0,0,24,0,8,0,8,0
+Course Registration System,com.courseapp,DataInitializer,156,0,0,0,73,0,3,0,3,0
+Course Registration System,com.courseapp,CourseRegistrationApplication,8,0,0,0,3,0,2,0,2,0
+Course Registration System,com.courseapp.service,StudentService,86,133,4,8,10,29,13,9,9,7
+Course Registration System,com.courseapp.service,CourseService,58,99,2,8,11,20,6,12,4,9
+Course Registration System,com.courseapp.model,Student,271,37,54,0,4,6,41,6,14,6
+Course Registration System,com.courseapp.model,Course.CourseBuilder,31,88,2,2,0,1,4,11,2,11
+Course Registration System,com.courseapp.model,Course,245,186,61,7,1,13,48,15,14,15
+Course Registration System,com.courseapp.model,Student.StudentBuilder,17,57,1,1,0,1,2,8,1,8
