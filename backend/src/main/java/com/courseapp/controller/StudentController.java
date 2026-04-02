@@ -11,7 +11,7 @@ import java.util.List;
 
 <<<<<<< HEAD
 @RestController
-@RequestMapping("https://course-registration-devops.onrender.com/api/students")
+@RequestMapping("https://course-registration-devops1.onrender.com/api/students")
 @CrossOrigin(origins = "*")
 
 =======
