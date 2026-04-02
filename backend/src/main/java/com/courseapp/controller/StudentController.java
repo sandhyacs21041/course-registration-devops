@@ -9,16 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-<<<<<<< HEAD
-@RestController
-@RequestMapping("https://course-registration-devops1.onrender.com/api/students")
-@CrossOrigin(origins = "*")
-
-=======
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/students")
->>>>>>> f69bbc1253168534ba9dcff2f2c158e8927c2c5b
 public class StudentController {
 
     @Autowired
