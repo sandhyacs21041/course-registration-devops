@@ -7,8 +7,4 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-<<<<<<< HEAD
 ENTRYPOINT ["java","-jar","app.jar"]
-=======
-ENTRYPOINT ["java","-jar","app.jar"]
->>>>>>> d2e472409010fb28e65b2ea1bd59a1f86ff45454

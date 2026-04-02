@@ -1,10 +1,8 @@
 import axios from 'axios';
 
-const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
+const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8090/api';
 
-const api = axios.create({
-baseURL: API_BASE
-});
+const api = axios.create({ baseURL: API_BASE });
 
 // Courses
 export const getCourses = () => api.get('/courses');
@@ -22,7 +20,7 @@ export const deleteStudent = (id) => api.delete(`/students/${id}`);
 
 // Registration
 export const registerCourse = (sId, cId) =>
-api.post(`/students/${sId}/register/${cId}`);
+  api.post(`/students/${sId}/register/${cId}`);
 
 export const dropCourse = (sId, cId) =>
-api.delete(`/students/${sId}/drop/${cId}`);
+  api.delete(`/students/${sId}/drop/${cId}`);

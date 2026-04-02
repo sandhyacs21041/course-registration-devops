@@ -1,0 +1,21 @@
+# Maven
+backend/target/
+backend/.mvn/
+*.jar
+*.war
+
+# Node
+frontend/node_modules/
+frontend/build/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Docker
+*.env
+
+# Logs
+*.log
