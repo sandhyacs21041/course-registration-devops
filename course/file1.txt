@@ -1,0 +1,438 @@
+git config --global user.name "username"
+git config --global user.email "gmail.com"
+
+1. 
+create the folder inside that folder create one file
+open git bash
+cd Desktop
+cd exper1
+git init
+git status
+git add .
+git commit -m ""
+make change in that file -> check the status
+git add .
+git commit -m ""
+git log
+
+2.
+create the folder inside that folder create one file
+cd desktop
+cd exper2
+git init
+git add .
+git commit -m ""
+git status
+git branch
+git branch mybranch
+git checkout mybranch
+make change in file ->git status ->git add .
+git commit -m ""
+git checkout master
+make change in file -> 
+git add .
+git commit -m""
+git merge mybranch
+git add .
+git commit -m "Resolved merge conflict"
+
+4.
+create new repo
+cd desktop
+git clone https://github.com/username/Git_PullRequests.git
+cd Git_PullRequests -> create file inside that folder
+git branch
+git add .
+git status
+git commit -m "Initial commit in main"
+git push origin main
+git branch feature-1
+git checkout feature-1
+make change in file
+touch feature.txt
+echo "Feature branch file" > feature.txt
+git status
+git add .
+git commit -m "Changes done in feature-1"
+git push origin feature-1
+open the git respo
+click on campare and pull request
+add description->create pull request->merge commit then to go git bash
+git checkout main
+git pull origin main
+git log --oneline
+git branch -d feature-1
+git push origin --delete feature-1
+
+5.
+new respo
+cd desktop
+git clone 
+git init
+cd tag (repo)
+git tag v1.0
+git tag
+git tag -a v1.1 -m "Version 1.1 release"
+git tag
+git tag -l “v1.*”
+git show v1.0
+git push origin v1.0
+git push --tags
+git tag -d v1.0
+git push origin -d v1.0
+
+6.mvn --version
+mvn archetype:generate
+mvn package
+mvn clean
+mvn site
+package com.bnmit;
+
+public class Calculator {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int subtract(int a, int b) {
+        return a - b;
+    }
+
+    public int multiply(int a, int b) {
+        return a * b;
+    }
+
+    public int divide(int a, int b) {
+        if (b == 0) {
+            throw new ArithmeticException("Cannot divide by zero");
+        }
+        return a / b;
+    }
+}
+CalculatorTest.java
+package com.bnmit;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class CalculatorTest {
+
+    Calculator calc = new Calculator();
+
+    @Test
+    void testAddition() {
+        assertEquals(10, calc.add(5, 5));
+    }
+
+    @Test
+    void testSubtraction() {
+        assertEquals(2, calc.subtract(5, 3));
+    }
+
+    @Test
+    void testMultiplication() {
+        assertEquals(15, calc.multiply(3, 5));
+    }
+
+    @Test
+    void testDivision() {
+        assertEquals(2, calc.divide(10, 5));
+    }
+
+    @Test
+    void testDivideByZero() {
+        Exception exception = assertThrows(ArithmeticException.class, () -> {
+            calc.divide(10, 0);
+        });
+        assertEquals("Cannot divide by zero", exception.getMessage());
+    }
+}
+
+8.
+public class Calculator {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        System.out.println("Addition: " + calc.add(5, 5));
+    }
+}
+javac Calculator.java
+java Calculator
+
+9. 10
+9 and 10
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the project...'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the application...'
+            }
+        }
+    }
+}
+
+For show the faliure jenkins
+
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Build') {
+            steps {
+                echo 'Building...'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                error "Test failed"   // ❌ Uncomment to simulate failure
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+            }
+        }
+
+    }
+}
+
+exper 15:
+open the docker in desktop
+docker --version
+docker ps
+docker ps -a
+docker images
+docker run hello-world
+docker pull nginx
+docker run -d -p 8080:80 nginx
+Open browser:
+http://localhost:8080
+docker ps
+docker stop <container_id>
+docker rm <container_id>
+
+exper 16 :
+create the folder inside that create  the 2 file
+1)sample.py
+print("Hello from Docker container!")
+2 app.py (webserver code)
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+
+PORT = 5020
+
+class MyHandler(SimpleHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+        self.wfile.write(b"<h1>Hello from Docker Python Container</h1>")
+
+server = HTTPServer(("0.0.0.0", PORT), MyHandler)
+print(f"Server running on port {PORT}...")
+server.serve_forever()
+
+1)Dockerfile for sample.py
+FROM python:3.9-slim
+WORKDIR /app
+COPY sample.py .
+CMD ["python", "sample.py"]
+docker build -t my-python-app .
+
+docker images
+docker run my-python-app
+
+2)Dockerfile for app.py
+
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY app.py .
+
+EXPOSE 5000
+
+CMD ["python", "app.py"]
+docker run my-python-app1
+docker run -p 5000:5000 my-python-app1
+
+exper 17:
+part A
+docker run -d nginx
+docker run -d -p 8080:80 nginx
+ verify  in browser
+part B
+docker volume create myvolume
+docker volume ls
+docker run -it -v myvolume:/data ubuntu bash
+cd /data
+echo "Docker Volume Persistence Test" > test.txt
+exit
+docker run -it -v myvolume:/data ubuntu bash
+cat /data/test.txt
+part C
+docker run -d -p 8081:80 -v myvolume:/usr/share/nginx/html nginx
+docker run -it -v myvolume:/data ubuntu bash
+echo "<h1>Persistent Web Page</h1>" > /data/index.html
+exit
+Open browser:
+http://localhost:8081
+Check running containers:
+docker ps
+Check volumes:
+docker volume ls
+Inspect volume:
+docker volume inspect myvolume
+
+11 public class Calculator {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int subtract(int a, int b) {
+        return a - b;
+    }
+
+    public int multiply(int a, int b) {
+        return a * b;
+    }
+
+    public int divide(int a, int b) {
+       
+        return a / b;
+    }
+
+    // ✅ MAIN METHOD TO SHOW OUTPUT
+    public static void main(String[] args) {
+
+        Calculator calc = new Calculator();
+
+        System.out.println("Addition: " + calc.add(5, 5));
+        System.out.println("Subtraction: " + calc.subtract(5, 3));
+        System.out.println("Multiplication: " + calc.multiply(3, 5));
+        System.out.println("Division: " + calc.divide(10, 5));
+    }
+}
+
+package com.example.junit;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+public class CalculatorTest {
+
+    Calculator calc = new Calculator();
+
+    @Test
+    void testAdd() {
+        assertEquals(10, calc.add(5, 5));
+    }
+
+    @Test
+    void testSubtract() {
+        assertEquals(2, calc.subtract(5, 3));
+    }
+
+    @Test
+    void testMultiply() {
+        assertEquals(15, calc.multiply(3, 5));
+    }
+
+    @Test
+    void testDivide() {
+        assertEquals(2, calc.divide(10, 5));
+    }
+
+    // Test for Exception
+   
+    
+}
+
+18 
+FROM eclipse-temurin:17-jdk
+
+# Set working directory
+WORKDIR /app
+
+# Copy Java file
+COPY Calculator.java .
+
+# Compile Java program
+RUN javac Calculator.java
+
+# Run the program
+CMD ["java", "Calculator"]
+
+public class Calculator {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int subtract(int a, int b) {
+        return a - b;
+    }
+
+    public int multiply(int a, int b) {
+        return a * b;
+    }
+
+    public int divide(int a, int b) {
+       
+        return a / b;
+    }
+
+    // ✅ MAIN METHOD TO SHOW OUTPUT
+    public static void main(String[] args) {
+
+        Calculator calc = new Calculator();
+
+        System.out.println("Addition: " + calc.add(5, 5));
+        System.out.println("Subtraction: " + calc.subtract(5, 3));
+        System.out.println("Multiplication: " + calc.multiply(3, 5));
+        System.out.println("Division: " + calc.divide(10, 5));
+    }
+}
+
+FROM eclipse-temurin:17-jdk
+
+WORKDIR /app
+
+COPY helloworld.java .
+
+RUN javac helloworld.java
+
+CMD ["java", "helloworld"]
+
+in file helloworld.java
+
+class helloworld {
+    public static void main(String[] args) {
+        System.out.println("Hello from Java Docker container!");
+    }
+}
+docker build -t devops-app .
+docker login
+docker tag devops-app sandhyahm/devops-app:v1
+docker push sandhyahm/devops-app:v1
